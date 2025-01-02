@@ -5,12 +5,6 @@ mod primitive_conversions;
 use core::ops::{Add, Mul, Neg};
 use core::str::FromStr;
 
-use revision::implementations::primitives::read_buffer;
-use revision::Error;
-use revision::Revisioned;
-use starknet_types_core::felt::Felt;
-use std::io;
-
 use num_bigint::{BigInt, BigUint, Sign};
 use num_integer::Integer;
 use num_traits::{One, Zero};
@@ -41,6 +35,11 @@ use lambdaworks_math::{
     traits::ByteConversion,
     unsigned_integer::element::UnsignedInteger,
 };
+
+use revision::implementations::primitives::read_buffer;
+use revision::Error;
+use revision::Revisioned;
+use std::io;
 
 #[cfg(feature = "arbitrary")]
 use arbitrary::{self, Arbitrary, Unstructured};
