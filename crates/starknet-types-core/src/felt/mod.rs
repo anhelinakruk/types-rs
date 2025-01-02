@@ -468,7 +468,7 @@ impl Revisioned for Felt {
         Self: Sized,
     {
         let b = read_buffer::<32, _>(r)?;
-        Ok(Felt252(Felt::from_bytes_le(&b)))
+        Ok(Felt::from_bytes_le(&b))
     }
 }
 
