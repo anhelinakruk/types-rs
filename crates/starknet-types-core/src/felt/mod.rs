@@ -36,6 +36,11 @@ use lambdaworks_math::{
     unsigned_integer::element::UnsignedInteger,
 };
 
+use revision::implementations::primitives::read_buffer;
+use revision::Error;
+use revision::Revisioned;
+use std::io;
+
 #[cfg(feature = "arbitrary")]
 use arbitrary::{self, Arbitrary, Unstructured};
 
@@ -444,6 +449,26 @@ impl Felt {
     #[cfg(feature = "prime-bigint")]
     pub fn prime() -> BigUint {
         (*CAIRO_PRIME_BIGINT).to_biguint().unwrap()
+    }
+}
+
+impl Revisioned for Felt {
+    fn revision() -> u16 {
+        1
+    }
+
+    fn serialize_revisioned<W: std::io::Write>(&self, writer: &mut W) -> Result<(), Error> {
+        let bytes = self.0.to_bytes_le();
+        writer.write_all(&bytes).map_err(Error::Io)?;
+        Ok(())
+    }
+
+    fn deserialize_revisioned<R: io::Read>(r: &mut R) -> Result<Self, Error>
+    where
+        Self: Sized,
+    {
+        let b = read_buffer::<32, _>(r)?;
+        Ok(Felt::from_bytes_le(&b))
     }
 }
 
